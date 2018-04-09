@@ -1,0 +1,11 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.huaguoguo.taotao.service.impl.PictureServiceImpl",
+      "name": "",
+      "type": "com.huaguoguo.taotao.service.impl.PictureServiceImpl"
+    }
+  ],
+  "properties": []
+}
