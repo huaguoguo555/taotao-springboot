@@ -4,6 +4,13 @@ server:
 spring:
     thymeleaf:
       mode: LEGACYHTML5
+    application:
+      name: taotao-portal
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8083/eureka/
 
 
 

@@ -1,0 +1,5 @@
+1.各系统的端口号
+    taotao-manager:8080
+    taotao-rest:8081
+    taotao-portal:8082
+    taotao-eureka-server:8083
