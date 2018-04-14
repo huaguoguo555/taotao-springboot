@@ -1,69 +1,55 @@
 package com.huaguoguo.taotao.common.pojo;
 
-import java.util.List;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.Serializable;
 
 /**
- * 淘淘商城自定义响应结构
+ *
+ ************************************************************
+ * @类名 : ResultModel.java
+ *
+ * @DESCRIPTION :通用响应消息体
+ * @AUTHOR : mgp
+ * @DATE : 2017年8月24日
+ * @param <T>
+ ************************************************************
  */
-public class ResultModel {
+public class ResultModel<T> implements Serializable {
 
-    // 定义jackson对象
-    private static final ObjectMapper MAPPER = new ObjectMapper();
-
-    // 响应业务状态
-    private Integer status;
-
-    // 响应消息
-    private String msg;
-
-    // 响应中的数据
-    private Object data;
-
-    public static ResultModel build(Integer status, String msg, Object data) {
-        return new ResultModel(status, msg, data);
-    }
-
-    public static ResultModel ok(Object data) {
-        return new ResultModel(data);
-    }
-
-    public static ResultModel ok() {
-        return new ResultModel(null);
-    }
+    private static final long serialVersionUID = -2693540100207312765L;
 
     public ResultModel() {
-
+        status = 200;
+        msg = "success";
     }
 
-    public static ResultModel build(Integer status, String msg) {
-        return new ResultModel(status, msg, null);
+
+
+    /**
+     * 响应结果数据体
+     */
+    private T data;
+
+    /**
+     * 响应提醒消息
+     */
+    private String msg;
+
+    /**
+     * 响应码（200表示成功，其它表示失败）
+     */
+    private long status;
+
+    /**
+     * 拓展字段
+     */
+    private String extField;
+
+    public T getData() {
+        return data;
     }
 
-    public ResultModel(Integer status, String msg, Object data) {
-        this.status = status;
-        this.msg = msg;
+    public void setData(T data) {
         this.data = data;
-    }
-
-    public ResultModel(Object data) {
-        this.status = 200;
-        this.msg = "OK";
-        this.data = data;
-    }
-
-//    public Boolean isOK() {
-//        return this.status == 200;
-//    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
     }
 
     public String getMsg() {
@@ -74,77 +60,25 @@ public class ResultModel {
         this.msg = msg;
     }
 
-    public Object getData() {
-        return data;
+    public long getStatus() {
+        return status;
     }
 
-    public void setData(Object data) {
-        this.data = data;
+    public void setStatus(long status) {
+        this.status = status;
     }
 
-    /**
-     * 将json结果集转化为TaotaoResult对象
-     * 
-     * @param jsonData json数据
-     * @param clazz TaotaoResult中的object类型
-     * @return
-     */
-    public static ResultModel formatToPojo(String jsonData, Class<?> clazz) {
-        try {
-            if (clazz == null) {
-                return MAPPER.readValue(jsonData, ResultModel.class);
-            }
-            JsonNode jsonNode = MAPPER.readTree(jsonData);
-            JsonNode data = jsonNode.get("data");
-            Object obj = null;
-            if (clazz != null) {
-                if (data.isObject()) {
-                    obj = MAPPER.readValue(data.traverse(), clazz);
-                } else if (data.isTextual()) {
-                    obj = MAPPER.readValue(data.asText(), clazz);
-                }
-            }
-            return build(jsonNode.get("status").intValue(), jsonNode.get("msg").asText(), obj);
-        } catch (Exception e) {
-            return null;
-        }
+    public String getExtField() {
+        return extField;
     }
 
-    /**
-     * 没有object对象的转化
-     * 
-     * @param json
-     * @return
-     */
-    public static ResultModel format(String json) {
-        try {
-            return MAPPER.readValue(json, ResultModel.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+    public void setExtField(String extField) {
+        this.extField = extField;
     }
 
-    /**
-     * Object是集合转化
-     * 
-     * @param jsonData json数据
-     * @param clazz 集合中的类型
-     * @return
-     */
-    public static ResultModel formatToList(String jsonData, Class<?> clazz) {
-        try {
-            JsonNode jsonNode = MAPPER.readTree(jsonData);
-            JsonNode data = jsonNode.get("data");
-            Object obj = null;
-            if (data.isArray() && data.size() > 0) {
-                obj = MAPPER.readValue(data.traverse(),
-                        MAPPER.getTypeFactory().constructCollectionType(List.class, clazz));
-            }
-            return build(jsonNode.get("status").intValue(), jsonNode.get("msg").asText(), obj);
-        } catch (Exception e) {
-            return null;
-        }
+    @Override
+    public String toString() {
+        return "MessageResult [data=" + data + ", msg=" + msg + ", status=" + status + ", extField=" + extField + "]";
     }
 
 }

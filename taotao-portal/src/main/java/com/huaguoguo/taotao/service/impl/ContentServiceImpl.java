@@ -9,7 +9,6 @@ import com.huaguoguo.taotao.feign.ContentFeignClient;
 import com.huaguoguo.taotao.po.AdNode;
 import com.huaguoguo.taotao.po.TbContent;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.taotao.portal.service.ContentService;
@@ -33,7 +32,8 @@ public class ContentServiceImpl implements ContentService {
 		//调用服务获得数据
 		ResultModel resultModel = contentFeignClient.getContentList(89L);
 		//取data属性，内容列表
-		List<TbContent> contentList = (List<TbContent>) resultModel.getData();
+		Object data = resultModel.getData();
+		List<TbContent> contentList = ((List<TbContent>) data);
 		//把内容列表转换成AdNode列表
 		List<AdNode> resultList = new ArrayList<>();
 		for (TbContent tbContent : contentList) {

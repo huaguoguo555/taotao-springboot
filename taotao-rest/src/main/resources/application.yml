@@ -27,9 +27,9 @@ spring:
       maxOpenPreparedStatements: 20
     redis:
       database: 1
-      host: 192.168.0.214
-      port: 7393
-      password: sz73go
+      host: 140.143.53.168
+      port: 8989
+      password: zk666
 
 
 mybatis:

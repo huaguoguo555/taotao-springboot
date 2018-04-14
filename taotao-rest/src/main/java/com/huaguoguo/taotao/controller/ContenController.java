@@ -31,13 +31,17 @@ public class ContenController {
 	@RequestMapping(value = "/content/{cid}",method = RequestMethod.GET)
 	@ResponseBody
 	public ResultModel getContentList(@PathVariable Long cid) {
-		
+		ResultModel<List<TbContent>> resultModel = new ResultModel();
 		try {
 			List<TbContent> list = contentService.getContentList(cid);
-			return ResultModel.ok(list);
+			resultModel.setData(list);
+			return resultModel;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResultModel.build(500, ExceptionUtil.getStackTrace(e));
+
+			resultModel.setStatus(500L);
+			resultModel.setMsg(ExceptionUtil.getStackTrace(e));
+			return resultModel;
 		}
 	}
 	@RequestMapping(value = "/sync/content/{cid}",method = RequestMethod.PUT)
@@ -48,7 +52,10 @@ public class ContenController {
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResultModel.build(500, ExceptionUtil.getStackTrace(e));
+			ResultModel resultModel = new ResultModel();
+			resultModel.setStatus(500L);
+			resultModel.setMsg(ExceptionUtil.getStackTrace(e));
+			return resultModel;
 		}
 	}
 	
